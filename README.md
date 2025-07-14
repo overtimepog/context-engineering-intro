@@ -1,8 +1,9 @@
-# Context Engineering Template
+# Context Engineering Template with MCP Integration
 
-A comprehensive template for getting started with Context Engineering - the discipline of engineering context for AI coding assistants so they have the information necessary to get the job done end to end.
+A comprehensive template for getting started with Context Engineering - the discipline of engineering context for AI coding assistants using Model Context Protocol (MCP) tools for enhanced research, reasoning, and validation.
 
 > **Context Engineering is 10x better than prompt engineering and 100x better than vibe coding.**
+> **MCP tools make Context Engineering 10x more powerful with real-time research and validation.**
 
 ## 🔗 Links & Resources
 
@@ -42,12 +43,14 @@ cd context-engineering-intro
 ## 📚 Table of Contents
 
 - [What is Context Engineering?](#what-is-context-engineering)
+- [MCP Tool Integration](#mcp-tool-integration)
 - [Template Structure](#template-structure)
 - [Step-by-Step Guide](#step-by-step-guide)
 - [Writing Effective INITIAL.md Files](#writing-effective-initialmd-files)
 - [The PRP Workflow](#the-prp-workflow)
 - [Using Examples Effectively](#using-examples-effectively)
 - [Best Practices](#best-practices)
+- [Governance & Quality Standards](#governance--quality-standards)
 
 ## What is Context Engineering?
 
@@ -71,28 +74,61 @@ Context Engineering represents a paradigm shift from traditional prompt engineer
 2. **Ensures Consistency**: AI follows your project patterns and conventions
 3. **Enables Complex Features**: AI can handle multi-step implementations with proper context
 4. **Self-Correcting**: Validation loops allow AI to fix its own mistakes
+5. **Real-Time Accuracy**: MCP tools provide up-to-date information, not outdated training data
+6. **Verifiable Sources**: Every decision backed by citations and current documentation
+
+## MCP Tool Integration
+
+This template now includes full Model Context Protocol (MCP) tool integration for enhanced capabilities:
+
+### Available MCP Tools
+
+| Tool | Purpose | When to Use |
+|------|---------|-------------|
+| **Context7** | Library documentation | Getting accurate, versioned API docs |
+| **Perplexity** | AI-powered research | Understanding concepts, best practices |
+| **Brave Search** | Web search | Finding examples, current information |
+| **Sequential Thinking** | Complex reasoning | Breaking down multi-step problems |
+| **Playwright MCP** | Web testing | Automated browser testing & validation |
+
+### MCP Research Workflow
+
+1. **Identify Information Needs** → What do you need to know?
+2. **Select Appropriate Tools** → Which MCP tool fits best?
+3. **Parallel Research** → Use multiple tools simultaneously
+4. **Document Findings** → Store in `/research/[topic]/`
+5. **Cite Sources** → Include URLs and dates
+6. **Apply Knowledge** → Use in implementation
 
 ## Template Structure
 
 ```
 context-engineering-intro/
 ├── .claude/
+│   ├── project/              # Project-specific context
 │   ├── commands/
-│   │   ├── generate-prp.md    # Generates comprehensive PRPs
-│   │   └── execute-prp.md     # Executes PRPs to implement features
-│   └── settings.local.json    # Claude Code permissions
+│   │   ├── generate-prp.md   # Generates PRPs with MCP research
+│   │   └── execute-prp.md    # Executes PRPs with validation
+│   └── settings.local.json   # Claude Code permissions
+├── docs/                     # Documentation
+│   ├── decisions/           # Architecture decision records
+│   ├── specs/              # Feature specifications
+│   └── capability-matrix.md # Feature inventory
+├── research/                # MCP tool research outputs
+│   └── [topic]/            # Organized by research topic
 ├── PRPs/
 │   ├── templates/
-│   │   └── prp_base.md       # Base template for PRPs
-│   └── EXAMPLE_multi_agent_prp.md  # Example of a complete PRP
-├── examples/                  # Your code examples (critical!)
-├── CLAUDE.md                 # Global rules for AI assistant
-├── INITIAL.md               # Template for feature requests
-├── INITIAL_EXAMPLE.md       # Example feature request
-└── README.md                # This file
+│   │   └── prp_base.md     # Base template for PRPs
+│   └── EXAMPLE_multi_agent_prp.md  # Example PRP
+├── examples/                # Your code examples (critical!)
+├── tests/                   # Test organization
+│   └── e2e/                # Playwright e2e tests
+├── CLAUDE.md               # Global rules with MCP integration
+├── PLANNING.md             # Architecture & governance
+├── TASK.md                 # Task tracking
+├── research-log.md         # Research history
+└── README.md               # This file
 ```
-
-This template doesn't focus on RAG and tools with context engineering because I have a LOT more in store for that soon. ;)
 
 ## Step-by-Step Guide
 
@@ -355,6 +391,38 @@ research/
 ```
 
 This multi-agent research approach results in PRPs with 9/10 confidence scores for one-pass implementation success.
+
+## Governance & Quality Standards
+
+### Core Principles
+- **KISS** – Keep it simple, avoid over-engineering
+- **YAGNI** – Build only what's needed today
+- **Plan > Prompt** – Articulate specs before writing code
+- **Fail Fast** – Surface errors immediately
+- **Real Data Only** – Use MCP tools for verified information
+
+### Quality Requirements
+| Metric | Standard | Validation |
+|--------|----------|------------|
+| Test Coverage | ≥ 85% | pytest-cov |
+| Type Coverage | 100% | mypy |
+| Code Quality | Zero errors | ruff |
+| Documentation | All public APIs | Auto-generated |
+| Research | Cited sources | MCP tools |
+
+### Development Workflow
+1. **Research Phase** → Use MCP tools comprehensively
+2. **Planning Phase** → Create detailed task lists
+3. **Implementation** → TDD with continuous validation
+4. **Testing Phase** → Unit → Integration → E2E (Playwright)
+5. **Documentation** → Update as you go
+6. **Git Checkpoint** → After each validated section
+
+### Key Files
+- **CLAUDE.md** - Global AI rules and MCP tool instructions
+- **PLANNING.md** - Architecture and detailed governance
+- **TASK.md** - Track all work with MCP tool usage
+- **research-log.md** - Document all research queries
 
 ## Resources
 

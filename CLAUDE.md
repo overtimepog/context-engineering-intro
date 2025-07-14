@@ -1,79 +1,342 @@
-### 🔄 Project Awareness & Context & Research
-- **Documentation is a source of truth** - Your knowledge is out of date, I will always give you the latest documentation before writing any files that use third party API's - that information was freshsly scraped and you should NOT use your own knowledge, but rather use the documentation as a source of absolute truth.
-- **Docker & Selftesting** - You must use Docker and you must do unit tests so when I open up the dashboard to use, it just works. I don't have to worry about fixing anything. You can use Docker with Curl, or just by running test scripts etc. Everything must be confirmed to work perfectly through Docker, you have access to the Docker CLI.
-- **check all jina scrapes** - some Jina scrapes fail and have very little content in them - if this happens, try scraping again until it works and you get the actual content of the file.
-- **Always read `PLANNING.md`** at the start of a new conversation to understand the project's architecture, goals, style, and constraints.
-- **Check `TASK.md`** before starting a new task. If the task isn’t listed, add it with a brief description and today's date.
-- **Use consistent naming conventions, file structure, and architecture patterns** as described in `PLANNING.md`.
-- **Use Docker commands** whenever executing Python commands, including for unit tests.
-- **Set up Docker** Setup a docker instance for development and be aware of the output of Docker so that you can self improve your code and testing.
-- **Agents** - Agents should be designed as intelligent human beings by giving them decision making, ability to do detailed research using Jina, and not just your basic propmts that generate absolute shit. This is absolutely vital. They should not use programmatic solutions to problems - but rather use reasoning and AI decision making to solve all problems. Every agent should have at least 5 prompts in an agentic workflow to create truly unique content. Each agent should also have the context of what its previous iterations have made.
-- **Stick to OFFICIAL DOCUMENTATION PAGES ONLY** - For all research ONLY use official documentation pages. Use a r.jina scrape on the documentation page given to you in intitial.md and then create a llm.txt from it in your memory, then choose the exact pages that make sense for this project and scrape them using your internal scraping tool.
-**Create full production ready code**
-- **Ultrathink** - Use Ultrathink capabilities before every stage of the PRP generation and code generation, what informatoin to put into PRD etc.
-- **LLM Models** - Always look for the models page from the documentation links mentioned below and find the model that is mentioned in the initial.md - do not change models, find the exact model name to use in the code.
-- **Always scrape around 30-100 pages in total when doing research** - If a page 404s or does not contain correct content, try to scrape again and find the actual page/content. Put the output of each SUCCESFUL Jina scrape into a new directory with the name of the technology researched, then inside it .md or .txt files of each output
-- **Refer to /research/ directory** - Before implementing any feature that uses something that requires documentation, refer to the relevant directory inside /research/ directory and use the .md files to ensure you're coding with great accuracy, never assume knowledge of a third party API, instead always use the documentation examples which are completely up to date.
-- **Take my tech as sacred truth, for example if I say a model name then research that model name for LLM usage - don't assume from your own knowledge at any point** 
-- **For Maximum efficiency, whenever you need to perform multiple independent operations, such as research, invoke all relevant tools simultaneously, rather that sequentially.**
+# Context Engineering Project Guidelines & MCP Integration
+**Version:** 2025-07-14  
+**Mandate:** Define operating principles for AI instances using this context engineering starter template.
 
-### 🧱 Code Structure & Modularity
-- **Never create a file longer than 500 lines of code.** If a file approaches this limit, refactor by splitting it into modules or helper files.
-- **When creating AI prompts do not hardcode examples but make everything dynamic or based off the context of what the prompt is for**
-- **Always refer to the specific Phase document you are on** - If you are on phase 1, use phase-1.md, if you are on phase 2, use phase-2.md, if you are on phase 3, use phase-3.md
-- **Agents should be designed as intelligent human beings** by giving them decision making, ability to do detailed research using Jina, and not just your basic propmts that generate absolute shit. This is absolutely vital.
-- **Organize code into clearly separated modules**, grouped by feature or responsibility.
-  For agents this looks like:
-    - `agent.py` - Main agent definition and execution logic 
-    - `tools.py` - Tool functions used by the agent 
-    - `prompts.py` - System prompts
-- **Use clear, consistent imports** (prefer relative imports within packages).
-- **Use clear, consistent imports** (prefer relative imports within packages).
-- **Use python_dotenv and load_env()** for environment variables.
+## Table of Contents
 
-### 🧪 Testing & Reliability
-- **Always create Pytest unit tests for new features** (functions, classes, routes, etc).
-- **After updating any logic**, check whether existing unit tests need to be updated. If so, do it.
-- **Tests should live in a `/tests` folder** mirroring the main app structure.
-  - Include at least:
-    - 1 test for expected use
-    - 1 edge case
-    - 1 failure case
+1. [Core Principles](#core-principles)
+2. [Sequential Thinking & Planning](#sequential-thinking--planning)
+3. [MCP Tool Integration](#mcp-tool-integration)
+4. [Project Awareness & Research](#project-awareness--research)
+5. [Code Structure & Organization](#code-structure--organization)
+6. [Testing & Quality Assurance](#testing--quality-assurance)
+7. [Documentation & Knowledge Management](#documentation--knowledge-management)
+8. [Task Management](#task-management)
+9. [Environment & Container Management](#environment--container-management)
+10. [Security & Compliance](#security--compliance)
 
-### ✅ Task Completion
-- **Mark completed tasks in `TASK.md`** immediately after finishing them.
-- Add new sub-tasks or TODOs discovered during development to `TASK.md` under a “Discovered During Work” section.
+---
 
-### 📎 Style & Conventions
-- **Use Python** as the primary language.
-- **Follow PEP8**, use type hints, and format with `black`.
-- **Use `pydantic` for data validation**.
-- Use `FastAPI` for APIs and `SQLAlchemy` or `SQLModel` for ORM if applicable.
-- Write **docstrings for every function** using the Google style:
-  ```python
-  def example():
-      """
-      Brief summary.
+## Core Principles
 
-      Args:
-          param1 (type): Description.
+* **KISS** – Keep it simple, avoid over-engineering
+* **YAGNI** – Build only what's needed today
+* **SOLID** – Adhere to SOLID design principles
+* **Plan > Prompt** – Articulate specs and plans *before* writing code
+* **Fail Fast** – Surface rich errors immediately; never silently retry
+* **Real Data Only** – Use validated real data from MCP tools and verified sources
+* **Observability-First** – Embed logging and tracing from the start
 
-      Returns:
-          type: Description.
-      """
-  ```
+---
 
-### 📚 Documentation & Explainability
-- **Update `README.md`** when new features are added, dependencies change, or setup steps are modified.
-- **Comment non-obvious code** and ensure everything is understandable to a mid-level developer.
-- When writing complex logic, **add an inline `# Reason:` comment** explaining the why, not just the what.
+## Sequential Thinking & Planning
 
-### 🧠 AI Behavior Rules
-- **Never assume missing context. Ask questions if uncertain.**
-- **Never hallucinate libraries or functions** – only use known, verified Python packages.
-- **Always confirm file paths and module names** exist before referencing them in code or tests.
-- **Never delete or overwrite existing code** unless explicitly instructed to or if part of a task from `TASK.md`.
+### Chain-of-Thought Protocol
 
-### Design
+* **Structured Reasoning:** Decompose every non-trivial goal into explicit, validated steps
+* **Extended Thinking Gating:** Before implementation, *stop and plan* using graduated cues:
+  - `think` < `think hard` < `think harder` < `ultrathink` (reserve for complex work)
+  - Use `mcp__sequential-thinking__sequentialthinking` for complex problem decomposition
+  - Execute only after the plan receives user or orchestrator approval
 
-- Stick to the design system inside designsystem.md Designsystem.md - must be adhered to at all times for building any new features.
+### Task Decomposition with TodoWrite
+
+* **Use TodoWrite proactively for:**
+  - Complex multi-step tasks (3+ steps)
+  - Non-trivial implementations requiring planning
+  - Tracking progress across MCP tool usage
+  - Demonstrating thoroughness to users
+
+### Multi-Phase Implementation
+
+1. **Research → Plan:** Use MCP tools to gather context → Create task list
+2. **Plan → Refine:** Augment with edge-cases, error handling, performance
+3. **Implement → Validate:** Execute with continuous testing and validation
+4. **Document → Checkpoint:** Update docs and create git checkpoints
+
+---
+
+## MCP Tool Integration
+
+### Available MCP Tools
+
+| Tool | Purpose | Usage Pattern |
+|------|---------|---------------|
+| **mcp__Context7__resolve-library-id** | Resolve library names to IDs | Always use before get-library-docs |
+| **mcp__Context7__get-library-docs** | Get up-to-date library docs | Use for external library documentation |
+| **mcp__perplexity-ask__perplexity_ask** | AI-powered research | Use for fact verification and complex queries |
+| **mcp__brave-search__brave_web_search** | Privacy-first web search | Use for current events and general research |
+| **mcp__sequential-thinking__sequentialthinking** | Complex problem solving | Use for multi-step reasoning |
+| **Playwright MCP** | Web testing & automation | Use for e2e testing and web validation |
+
+### Research Workflow
+
+1. **Unknown Concepts**: Start with `mcp__perplexity-ask__perplexity_ask` for overview
+2. **Current Information**: Use `mcp__brave-search__brave_web_search` for latest updates
+3. **Library Documentation**: 
+   - First: `mcp__Context7__resolve-library-id` to get library ID
+   - Then: `mcp__Context7__get-library-docs` with the resolved ID
+4. **Complex Problems**: Use `mcp__sequential-thinking__sequentialthinking` to break down
+5. **Web Testing**: Configure and use Playwright MCP for automated testing
+
+### MCP Tool Best Practices
+
+* **Parallel Research**: Invoke multiple MCP tools simultaneously for efficiency
+* **Citation Requirements**: Always include source URLs and retrieval dates
+* **Version Awareness**: Note library versions when using Context7
+* **No Hallucination Policy**: Every technical detail must be verified through MCP tools
+* **Research Volume**: Conduct comprehensive research (30-100 sources for new features)
+
+---
+
+## Project Awareness & Research
+
+### Initial Setup
+- **Always read `PLANNING.md`** at conversation start for architecture understanding
+- **Check `TASK.md`** before starting new tasks
+- **Review `research-log.md`** for past research context
+
+### Documentation Sources
+- **MCP Tools First**: Use MCP tools for all external documentation needs
+- **Official Sources Only**: Stick to official documentation pages
+- **Research Organization**: Store all research in `/research/[topic]/` directories
+- **Citation Format**: Include source, date, and tool used for each finding
+
+### Research Process
+1. Use MCP tools to gather documentation
+2. Create comprehensive notes in `/research/[topic]/[source].md`
+3. Reference research files in implementations
+4. Update `research-log.md` with queries and findings
+
+---
+
+## Code Structure & Organization
+
+### Directory Layout
+```
+context-engineering-intro/
+├── .claude/
+│   ├── project/         # Project-specific AI context
+│   ├── commands/        # Custom Claude commands
+│   └── settings.local.json
+├── src/                 # Source code (domain-driven structure)
+├── tests/              # Test files mirroring src/
+│   └── e2e/           # Playwright end-to-end tests
+├── docs/               # Documentation
+│   ├── decisions/      # ADR files
+│   └── specs/         # Feature specifications
+├── research/           # MCP tool research outputs
+├── PRPs/              # Product Requirement Prompts
+├── config/            # Configuration files
+└── scripts/           # Build and utility scripts
+```
+
+### File Organization Rules
+- **Max file size**: 500 lines (excluding comments/blanks)
+- **Single responsibility**: Each file has one clear purpose
+- **Domain-driven**: Group by feature/domain, not technical layer
+- **Naming conventions**: 
+  - Python: `snake_case`
+  - JavaScript/TypeScript: `camelCase`
+  - Classes: `PascalCase`
+
+### Module Structure
+For agents/features:
+- `agent.py` - Main agent definition and execution
+- `tools.py` - Tool functions used by the agent
+- `prompts.py` - System prompts
+- `__init__.py` - Public API surface
+
+---
+
+## Testing & Quality Assurance
+
+### Testing Requirements
+- **Coverage**: ≥ 85% test coverage requirement
+- **Test Types**: Unit, integration, regression, and e2e tests
+- **Test Organization**: Mirror source structure in `/tests`
+- **Playwright Tests**: Store in `tests/e2e/` with `[feature].spec.ts` naming
+
+### Playwright MCP Integration
+```yaml
+# Configure Playwright MCP for web testing
+playwright:
+  command: "npx"
+  args: ["@playwright/mcp@latest", "--headless"]
+  capabilities:
+    - browser_snapshot
+    - browser_click
+    - browser_navigate
+    - browser_take_screenshot
+    - browser_generate_playwright_test
+```
+
+### Test-Driven Development
+1. **Write tests first** using existing patterns
+2. **Run tests** after each implementation section
+3. **Pass → Git checkpoint** → Next section
+4. **Use Playwright MCP** for web UI validation
+
+### Validation Gates
+```bash
+# Python projects
+ruff check --fix && mypy .
+pytest tests/ -v --cov=src --cov-report=term-missing
+
+# Web projects - use Playwright MCP
+# The AI will use browser_generate_playwright_test tool
+# Then execute the generated tests
+```
+
+---
+
+## Documentation & Knowledge Management
+
+### Documentation Structure
+```
+docs/
+├── decisions/          # ADR-###-[title].md files
+├── specs/             # Feature specifications
+├── api/               # API documentation
+└── capability-matrix.md  # What the project can/cannot do
+```
+
+### Research Documentation
+- **Location**: `/research/[topic]/[source].md`
+- **Format**: Include tool used, date, source URL, key findings
+- **Research Log**: Update `research-log.md` with all queries
+
+### Documentation Requirements
+- **No README > 500 lines**: Split into focused documents
+- **API Docs**: Auto-generate from code when possible
+- **Decision Records**: Document all architectural decisions
+- **Capability Matrix**: Maintain current feature inventory
+
+---
+
+## Task Management
+
+### Using TASK.md
+- **Check before starting**: Look for existing tasks
+- **Add new tasks**: Include description and date
+- **Mark completed**: Update immediately after completion
+- **Discovered work**: Add under "Discovered During Work" section
+
+### Task Documentation Pattern
+```markdown
+## Task-001: Implement Feature X
+**Date**: 2025-07-14
+**Status**: In Progress
+**MCP Tools Used**: Context7, Perplexity
+**Research**: /research/feature-x/
+**Implementation**: /src/features/feature-x/
+```
+
+---
+
+## Environment & Container Management
+
+### Docker/Container Usage
+- **All operations in containers**: Use Docker/Dagger for isolation
+- **Environment specs**: Single source of truth (requirements.txt, package.json, etc.)
+- **Python projects**: Use venv/virtualenv, never global packages
+- **Container testing**: Run all tests inside containers for parity
+
+### Playwright MCP Container Config
+```yaml
+# For isolated browser testing
+playwright:
+  command: "docker"
+  args: ["run", "-i", "--rm", "--init", "mcr.microsoft.com/playwright/mcp"]
+```
+
+---
+
+## Security & Compliance
+
+### Security Rules
+- **No hardcoded secrets**: Use environment variables
+- **Input validation**: Sanitize all external data
+- **Least privilege**: Minimal permissions for all operations
+- **Audit trails**: Log all significant actions
+
+### MCP Tool Security
+- **API Keys**: Store in `.env` files (never commit)
+- **Rate Limiting**: Respect all API limits
+- **Data Privacy**: Be mindful of data sent to external services
+
+---
+
+## Style & Conventions
+
+### Python Development
+- **Follow PEP8** with type hints
+- **Format with `black`**
+- **Use `pydantic` for validation**
+- **Docstrings**: Google style for all functions
+- **Environment**: Use `python-dotenv` for config
+
+### Import Order
+1. Standard library imports
+2. Third-party imports  
+3. Local application imports
+4. Relative imports (sparingly)
+
+### Error Handling
+- **Explicit errors**: Never suppress exceptions
+- **Defensive programming**: Use assertions and fallbacks
+- **Actionable messages**: Include context and recovery steps
+
+---
+
+## AI Behavior Rules
+
+### MCP Tool Usage
+- **Research unknown concepts** immediately with Perplexity/Brave
+- **Verify all technical details** through MCP tools
+- **Document sources** with citations and dates
+- **Use sequential thinking** for complex problems
+- **Test with Playwright MCP** for web features
+
+### Context Management
+- **Track token usage** continuously
+- **Compact at 80%** of context window
+- **Prioritize relevant** information
+- **Use research files** to offload context
+
+### Implementation Guidelines
+- **Never assume**: Always verify with MCP tools
+- **Never hallucinate**: Only use verified information
+- **Always validate**: Run tests and fix issues
+- **Document everything**: Update docs as you go
+
+---
+
+## Quick Reference: MCP Tool Commands
+
+```python
+# Research with Perplexity
+mcp__perplexity-ask__perplexity_ask(messages=[...])
+
+# Web search with Brave
+mcp__brave-search__brave_web_search(query="...", count=10)
+
+# Get library documentation
+# First resolve the library ID
+mcp__Context7__resolve-library-id(libraryName="playwright")
+# Then get docs with resolved ID
+mcp__Context7__get-library-docs(context7CompatibleLibraryID="/microsoft/playwright")
+
+# Complex reasoning
+mcp__sequential-thinking__sequentialthinking(
+    thought="...",
+    thoughtNumber=1,
+    totalThoughts=5,
+    nextThoughtNeeded=True
+)
+
+# Playwright testing (configured via MCP server)
+# Use browser_* tools for web automation
+```
+
+Remember: **Always use MCP tools for research, never rely on training data alone!**
