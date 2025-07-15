@@ -177,6 +177,33 @@ playwright:
 3. **Pass → Git checkpoint** → Next section
 4. **Use Playwright MCP** for web UI validation
 
+### Multi-Agent Testing Strategy
+
+**For comprehensive testing, use multiple agents with different perspectives:**
+
+* **Service Agent**: Deploy one agent to run the application/service
+* **User Agent**: Deploy another agent to interact with the application as a user
+* **Monitor Agent**: Deploy additional agents to observe system behavior and logs
+* **Error Correlation**: When errors occur:
+  - Service agent sees server-side errors and system logs
+  - User agent sees client-side errors and interaction issues
+  - Monitor agents see performance metrics and external dependencies
+  - Cross-reference perspectives to identify root causes
+
+**Agent Communication Requirements:**
+* **Real-time coordination**: Agents must communicate status, errors, and findings
+* **Shared context**: Use shared files, logs, or messaging systems for coordination
+* **Synchronized testing**: Coordinate test scenarios and timing between agents
+* **Error broadcasting**: When one agent encounters an error, notify all other agents immediately
+* **Result aggregation**: Consolidate findings from all agents into comprehensive test reports
+
+**Implementation Pattern:**
+1. Agent 1: Start services and monitor system logs
+2. Agent 2: Execute user interactions and report issues
+3. Agent 3: Monitor performance and external integrations
+4. Agent 4: Coordinate testing scenarios and aggregate results
+5. **All agents**: Continuously share status updates and error reports with each other
+
 ### Validation Gates
 ```bash
 # Python projects

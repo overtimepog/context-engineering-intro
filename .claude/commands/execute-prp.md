@@ -71,12 +71,20 @@ For EACH task in the plan:
    pytest tests/[relevant] -v
    ```
 
-3. **Fix Issues**
+3. **Multi-Agent Testing (After Each Section)**
+   Deploy multiple agents for comprehensive validation:
+   - **Service Agent**: Start and monitor the application/service
+   - **User Agent**: Test interactions and user workflows
+   - **Monitor Agent**: Watch for errors, performance issues, logs
+   - **Coordination**: Agents share findings and coordinate test scenarios
+   - **Regression Check**: Verify previous features still work correctly
+
+4. **Fix Issues**
    - If validation fails, use sequential thinking to diagnose
    - Research solutions with MCP tools if needed
    - Document fixes for future reference
 
-4. **Git Checkpoint** (if all tests pass)
+5. **Git Checkpoint** (if all tests pass)
    ```bash
    git add [files]
    git commit -m "feat: implement [section] - all tests passing"
@@ -112,7 +120,7 @@ pytest tests/ -v --cov=src --cov-report=term-missing
 # If not, add missing tests
 ```
 
-#### 6.2 Integration Testing
+#### 6.2 Integration Testing with Multi-Agent Feature Loss Detection
 ```bash
 # Start service/application
 python -m src.main --dev  # or appropriate command
@@ -123,6 +131,17 @@ pytest tests/integration -v
 # Manual verification if needed
 curl -X POST http://localhost:8000/[endpoint] -d '{...}'
 ```
+
+**Enhanced Multi-Agent Testing for Feature Loss Detection:**
+- **Service Agent**: Maintains application instance and monitors system health
+- **Legacy Feature Agent**: Tests all previously implemented features for regression
+- **New Feature Agent**: Validates current implementation section
+- **Integration Agent**: Tests interactions between old and new features
+- **Communication Protocol**: 
+  - Share test results in real-time via shared log files
+  - Coordinate test timing to avoid conflicts
+  - Report any feature degradation immediately
+  - Cross-validate findings between agents
 
 #### 6.3 E2E Testing
 If applicable, run Playwright E2E tests:
@@ -145,6 +164,9 @@ Review all items from PRP validation section:
 - [ ] Manual tests successful
 - [ ] Error cases handled
 - [ ] Performance acceptable
+- [ ] Multi-agent testing confirms no feature loss
+- [ ] All agents report successful coordination
+- [ ] Cross-agent validation completed
 
 #### 7.2 Update Documentation
 - Update README.md if needed
@@ -167,6 +189,31 @@ Generate a summary including:
 - Test results summary
 - Performance metrics
 - Suggestions for improvement
+
+## Multi-Agent Communication Protocol
+
+### Agent Coordination Requirements
+
+**Shared Context Management:**
+- Create shared log file: `/tmp/multi-agent-test-log.md` 
+- Each agent writes status updates with timestamps
+- Include agent role, current action, and findings
+- Log any errors or unexpected behavior immediately
+
+**Communication Pattern:**
+```markdown
+[TIMESTAMP] [AGENT_ROLE] [STATUS] [MESSAGE]
+2025-07-15 10:30:00 SERVICE_AGENT STARTED Application running on port 8000
+2025-07-15 10:30:05 USER_AGENT TESTING Testing login functionality
+2025-07-15 10:30:10 MONITOR_AGENT ERROR Database connection timeout detected
+2025-07-15 10:30:15 LEGACY_AGENT REGRESSION Previous search feature working correctly
+```
+
+**Synchronization Points:**
+- Wait for SERVICE_AGENT "READY" before starting tests
+- Coordinate test scenarios to avoid conflicts
+- Share test results before proceeding to next section
+- Aggregate findings before final validation
 
 ## MCP Tool Usage During Execution
 
