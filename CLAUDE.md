@@ -26,6 +26,7 @@
 * **Fail Fast** – Surface rich errors immediately; never silently retry
 * **Real Data Only** – Use validated real data from MCP tools and verified sources
 * **Observability-First** – Embed logging and tracing from the start
+* **Direct Web Testing** – YOU must use Playwright MCP to directly interact with and test websites, never assume functionality works
 
 ---
 
@@ -67,7 +68,7 @@
 | **mcp__perplexity-ask__perplexity_ask** | AI-powered research | Use for fact verification and complex queries |
 | **mcp__brave-search__brave_web_search** | Privacy-first web search | Use for current events and general research |
 | **mcp__sequential-thinking__sequentialthinking** | Complex problem solving | Use for multi-step reasoning |
-| **Playwright MCP** | Web testing & automation | Use for e2e testing and web validation |
+| **Playwright MCP** | Web testing & automation | Use for e2e testing and web validation - YOU should use this to interact with and test websites directly |
 
 ### Research Workflow
 
@@ -77,9 +78,17 @@
    - First: `mcp__Context7__resolve-library-id` to get library ID
    - Then: `mcp__Context7__get-library-docs` with the resolved ID
 4. **Complex Problems**: Use `mcp__sequential-thinking__sequentialthinking` to break down
-5. **Web Testing**: Configure and use Playwright MCP for automated testing
+5. **Web Testing**: YOU must use Playwright MCP to directly interact with and test websites
 
 ### MCP Tool Best Practices
+
+* **Playwright MCP for Web Testing**: When dealing with web applications, YOU must use Playwright MCP tools to directly interact with websites:
+  - `browser_navigate` to visit pages
+  - `browser_click` to click buttons and links
+  - `browser_type` to fill forms
+  - `browser_take_screenshot` to capture visual evidence
+  - `browser_snapshot` to save page states
+  - Never assume web functionality works - always test it yourself using Playwright MCP
 
 * **Parallel Research**: Invoke multiple MCP tools simultaneously for efficiency
 * **Citation Requirements**: Always include source URLs and retrieval dates
@@ -175,14 +184,14 @@ playwright:
 1. **Write tests first** using existing patterns
 2. **Run tests** after each implementation section
 3. **Pass → Git checkpoint** → Next section
-4. **Use Playwright MCP** for web UI validation
+4. **Use Playwright MCP** for web UI validation - YOU should directly interact with and test websites
 
 ### Multi-Agent Testing Strategy
 
 **For comprehensive testing, use multiple agents with different perspectives:**
 
 * **Service Agent**: Deploy one agent to run the application/service
-* **User Agent**: Deploy another agent to interact with the application as a user
+* **User Agent**: Deploy another agent to interact with the application as a user (use Playwright MCP for web testing)
 * **Monitor Agent**: Deploy additional agents to observe system behavior and logs
 * **Error Correlation**: When errors occur:
   - Service agent sees server-side errors and system logs
@@ -190,19 +199,41 @@ playwright:
   - Monitor agents see performance metrics and external dependencies
   - Cross-reference perspectives to identify root causes
 
+**Issue Discovery & Fix Agent Pattern:**
+* **Testing Agents**: Focus ONLY on finding and documenting issues
+  - **For Web Testing**: YOU must use Playwright MCP tools (`browser_navigate`, `browser_click`, `browser_take_screenshot`, `browser_snapshot`) to directly interact with websites
+  - Document all issues in shared `/tmp/testing-issues.md`
+  - Include: Agent, Type, Description, Location, Expected vs Actual, Priority, Screenshots (for web issues)
+  - Do NOT attempt to fix issues - only document them
+* **Fix Agent Deployment**: After testing phase completes
+  - Spawns dedicated Fix Agent to address all documented issues
+  - Fix Agent uses MCP tools for research:
+    1. Use `mcp__perplexity-ask__perplexity_ask` for debugging guidance
+    2. Use `mcp__Context7__get-library-docs` for API documentation
+    3. Use `mcp__brave-search__brave_web_search` for current examples
+  - Fix Agent implements solutions and reports completion
+* **Fix-Test Communication Loop**:
+  - Fix Agent announces each fix completion
+  - Testing Agents re-test specific issues (YOU must use Playwright MCP for web issues to directly interact with websites)
+  - Testing Agents report verification results back to Fix Agent with visual evidence
+  - Compare before/after screenshots for web fixes
+  - Continue until all issues marked "RESOLVED"
+
 **Agent Communication Requirements:**
 * **Real-time coordination**: Agents must communicate status, errors, and findings
 * **Shared context**: Use shared files, logs, or messaging systems for coordination
 * **Synchronized testing**: Coordinate test scenarios and timing between agents
 * **Error broadcasting**: When one agent encounters an error, notify all other agents immediately
 * **Result aggregation**: Consolidate findings from all agents into comprehensive test reports
+* **MCP Research Logs**: Include MCP tool usage and findings in shared communication
 
 **Implementation Pattern:**
 1. Agent 1: Start services and monitor system logs
 2. Agent 2: Execute user interactions and report issues
 3. Agent 3: Monitor performance and external integrations
 4. Agent 4: Coordinate testing scenarios and aggregate results
-5. **All agents**: Continuously share status updates and error reports with each other
+5. **All agents**: Continuously share status updates, error reports, and MCP research findings with each other
+6. **Fix-Test Cycle**: Each agent tests (YOU use Playwright MCP for web) → researches with MCP → fixes → re-tests until working
 
 ### Validation Gates
 ```bash
@@ -323,7 +354,7 @@ playwright:
 - **Verify all technical details** through MCP tools
 - **Document sources** with citations and dates
 - **Use sequential thinking** for complex problems
-- **Test with Playwright MCP** for web features
+- **Test with Playwright MCP** for web features - YOU must directly interact with websites, never assume functionality
 
 ### Context Management
 - **Track token usage** continuously
